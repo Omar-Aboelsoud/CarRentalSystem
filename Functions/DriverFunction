@@ -1,0 +1,22 @@
+        
+        #functionCalls
+        self.setVisiblityOfButtons()
+        self.UploadAgreementType_PushButton.clicked.connect(self.UploadAgreementType)
+        self.UploadCertification_PushButton.clicked.connect(self.UploadCertification)       
+        self.UploadDocumentId_PushButton.clicked.connect(self.UploadDocumentId)
+        self.UploadLisence_PushButton.clicked.connect(self.UploadLisence)
+        
+    def setVisiblityOfButtons(self):
+        self.ViewAgreementDocument_PushButton.hide()
+        self.ViewCertification_PushButton.hide()
+        self.ViewIDDocument_PushButton.hide()
+        self.ViewLisence_PushButton.hide()
+        
+    def UploadAgreementType(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    def UploadCertification(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    def UploadDocumentId(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    def UploadLisence(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()

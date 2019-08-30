@@ -1,0 +1,97 @@
+  
+        self.SetCurrentDate()
+        self.SetDefaultValueOfAlerts(Dialog)
+        self.setButtonVisiblityDefautlSettings()
+        #CheckBoxConnection
+        self.IsFueledCheckBoxNo.clicked.connect(self.DisableFueled)
+        self.IsFueledCheckBoxYes.clicked.connect(self.EnableFueled)
+        self.TripShift8CheckBox.clicked.connect(self.Enable8Shift)
+        self.TripShift12CheckBox.clicked.connect(self.Enable12Shift)
+        self.DailyRentCheckBox.clicked.connect(self.EnableDailyRentShift)
+        self.ReturnKM_PushButton.clicked.connect(self.UploadReturnKMScreenShots)
+        self.PickupKM_PushButton.clicked.connect(self.UploadPickUpKMScreenShots)
+        self.AccidentBill_button.clicked.connect(self.UploadAccidentBil)
+        self.UploadTripBillScreenshot_PushButton.clicked.connect(self.UploadTripBill) 
+        self.UploadFuelBill_PushButton.clicked.connect(self.UploadFuelBill)
+#        self.DayoffcheckBoxNo.clicked.connect(lambda: self.setDayoffYes(Dialog))
+#        self.DayoffcheckBoxYes.clicked.connect(lambda: self.setDayOffNo(Dialog))
+    def SetCurrentDate(self):
+         CurrentDate=datetime.now()
+         self.TodayDateTime.setDate(QDate(CurrentDate.year,CurrentDate.month,CurrentDate.day))
+        
+    def SetDefaultValueOfAlerts(self,Dialog):
+         Dialog.resize(608,405)
+         self.SaveButton.move(250,370)
+#         self.AlertLabel.setStyleSheet('color:red')
+         self.AlertLabel.hide()
+         self.ShowAllUpComingAlerts_PushButton.hide()
+  
+    def setButtonVisiblityDefautlSettings(self):
+        self.ViewAccidentBill_PushButton.hide()
+        self.ViewFuelBill_PushButton.hide()
+        self.ViewPickUpKM_PushButton.hide()
+        self.ViewReturnKM_PushButton.hide()
+        self.ViewTripBillScreenshot_PushButton.hide()
+         
+            
+    def setDayoffYes(self,Dialog):
+            self.DayoffcheckBoxNo.setChecked(True)
+            self.DayoffcheckBoxYes.setChecked(False)
+            Dialog.resize(608,405)
+            
+            
+    def setDayOffNo(self,Dialog):
+       
+           self.DayoffcheckBoxYes.setChecked(True)
+           self.DayoffcheckBoxNo.setChecked(False)
+           Dialog.resize(608,79)
+           
+             
+                                      
+    def EnableFueled(self):
+            self.IsFueledCheckBoxYes.setChecked(True)
+            self.IsFueledCheckBoxNo.setChecked(False)
+            
+            self.FuelText.setEnabled(True)
+            self.FuelBillButton.setEnabled(True)
+            self.KMnumberFueledAtText.setEnabled(True)
+            
+    def DisableFueled(self):
+        self.IsFueledCheckBoxNo.setChecked(True)
+        self.IsFueledCheckBoxYes.setChecked(False)
+        
+        self.FuelText.setEnabled(False)
+        self.FuelBillButton.setEnabled(False)
+        self.KMnumberFueledAtText.setEnabled(False)
+            
+    def Enable8Shift(self):
+        self.TripShift12CheckBox.setChecked(False)
+        self.TripShift8CheckBox.setChecked(True)
+        self.DailyRentCheckBox.setChecked(False)
+        
+        
+    def Enable12Shift(self):
+        self.TripShift12CheckBox.setChecked(True)
+        self.TripShift8CheckBox.setChecked(False)
+        self.DailyRentCheckBox.setChecked(False)
+    
+    def EnableDailyRentShift(self):
+         
+        self.TripShift12CheckBox.setChecked(False)
+        self.TripShift8CheckBox.setChecked(False)
+        self.DailyRentCheckBox.setChecked(True)
+        
+    def UploadPickUpKMScreenShots(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        
+    def UploadReturnKMScreenShots(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        
+    def UploadFuelBill(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    
+    def UploadAccidentBil(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    
+    def UploadTripBill(self):
+        ImagePath=self._RentalCarCommon.openFileNameDialog()
