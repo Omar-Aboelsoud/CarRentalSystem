@@ -56,9 +56,6 @@ class Ui_Activity(object):
             self.PickupKM_label = QtWidgets.QLabel(Dialog)
             self.PickupKM_label.setGeometry(QtCore.QRect(20, 80, 47, 13))
             self.PickupKM_label.setObjectName("PickupKM_label")
-            self.DayOffReason_label = QtWidgets.QLabel(Dialog)
-            self.DayOffReason_label.setGeometry(QtCore.QRect(20, 85, 80, 13))
-            self.DayOffReason_label.setObjectName("DayOffReason_label")
             self.ReturnKMLabel = QtWidgets.QLabel(Dialog)
             self.ReturnKMLabel.setGeometry(QtCore.QRect(360, 80, 51, 16))
             self.ReturnKMLabel.setObjectName("ReturnKMLabel")
@@ -81,9 +78,9 @@ class Ui_Activity(object):
             self.UploadFuelBill_PushButton.setEnabled(False)
             self.UploadFuelBill_PushButton.setGeometry(QtCore.QRect(210, 150, 111, 23))
             self.UploadFuelBill_PushButton.setObjectName("UploadFuelBill_PushButton")
-            self.DayoffLabel = QtWidgets.QLabel(Dialog)
-            self.DayoffLabel.setGeometry(QtCore.QRect(260, 20, 47, 13))
-            self.DayoffLabel.setObjectName("DayoffLabel")
+            self.AccidentLabel = QtWidgets.QLabel(Dialog)
+            self.AccidentLabel.setGeometry(QtCore.QRect(260, 20, 47, 13))
+            self.AccidentLabel.setObjectName("AccidentLabel")
             self.KMnumberFueledAtLabel = QtWidgets.QLabel(Dialog)
             self.KMnumberFueledAtLabel.setGeometry(QtCore.QRect(390, 150, 101, 16))
             self.KMnumberFueledAtLabel.setObjectName("KMnumberFueledAtLabel")
@@ -98,13 +95,6 @@ class Ui_Activity(object):
             self.CaptainNameComboBox.setGeometry(QtCore.QRect(110, 50, 111, 22))
             self.CaptainNameComboBox.setEditable(True)
             self.CaptainNameComboBox.setObjectName("CaptainNameComboBox")
-            self.DayOffReasonCheckBox = QtWidgets.QComboBox(Dialog)
-            self.DayOffReasonCheckBox.setGeometry(QtCore.QRect(110, 80, 111, 22))
-            self.DayOffReasonCheckBox.setEditable(True)
-            self.DayOffReasonCheckBox.setObjectName("DayOffReasonCheckBox")
-            self.DayOffReasonCheckBox.addItem("")
-            self.DayOffReasonCheckBox.addItem("")
-            self.DayOffReasonCheckBox.addItem("")
             self.CaptainName_Label = QtWidgets.QLabel(Dialog)
             self.CaptainName_Label.setGeometry(QtCore.QRect(20, 50, 70, 16))
             self.CaptainName_Label.setObjectName("CaptainName_Label")
@@ -148,13 +138,13 @@ class Ui_Activity(object):
             self.TodayDateTime.setMouseTracking(False)
             self.TodayDateTime.setCalendarPopup(True)
             self.TodayDateTime.setObjectName("TodayDateTime")
-            self.DayoffcheckBoxYes = QtWidgets.QCheckBox(Dialog)
-            self.DayoffcheckBoxYes.setGeometry(QtCore.QRect(330, 20, 70, 17))
-            self.DayoffcheckBoxYes.setObjectName("DayoffcheckBoxYes")
-            self.DayoffcheckBoxNo = QtWidgets.QCheckBox(Dialog)
-            self.DayoffcheckBoxNo.setGeometry(QtCore.QRect(390, 20, 70, 17))
-            self.DayoffcheckBoxNo.setChecked(True)
-            self.DayoffcheckBoxNo.setObjectName("DayoffcheckBoxNo")
+            self.AccdientCheckBoxYes = QtWidgets.QCheckBox(Dialog)
+            self.AccdientCheckBoxYes.setGeometry(QtCore.QRect(330, 20, 70, 17))
+            self.AccdientCheckBoxYes.setObjectName("AccdientCheckBoxYes")
+            self.AccdientcheckBoxNo = QtWidgets.QCheckBox(Dialog)
+            self.AccdientcheckBoxNo.setGeometry(QtCore.QRect(390, 20, 70, 17))
+            self.AccdientcheckBoxNo.setChecked(True)
+            self.AccdientcheckBoxNo.setObjectName("AccdientcheckBoxNo")
             self.TripShift12CheckBox = QtWidgets.QCheckBox(Dialog)
             self.TripShift12CheckBox.setGeometry(QtCore.QRect(330, 50, 70, 17))
             self.TripShift12CheckBox.setChecked(True)
@@ -191,9 +181,9 @@ class Ui_Activity(object):
             self.ViewTripBillScreenshot_PushButton = QtWidgets.QPushButton(Dialog)
             self.ViewTripBillScreenshot_PushButton.setGeometry(QtCore.QRect(290, 260, 111, 23))
             self.ViewTripBillScreenshot_PushButton.setObjectName("ViewTripBillScreenshot_PushButton")
-            self.DayOffReasonDescription_Text= QtWidgets.QTextEdit(Dialog)
-            self.DayOffReasonDescription_Text.setGeometry(375,70,201,71)
-            self.DayOffReasonDescription_Text.setObjectName("DayOffReasonDescription_Text")
+            self.AccdientReasonDescription_Text= QtWidgets.QTextEdit(Dialog)
+            self.AccdientReasonDescription_Text.setGeometry(375,70,201,71)
+            self.AccdientReasonDescription_Text.setObjectName("AccdientReasonDescription_Text")
             self.retranslateUi(Dialog)
             QtCore.QMetaObject.connectSlotsByName(Dialog)
 
@@ -213,7 +203,6 @@ class Ui_Activity(object):
             self.SaveButton.setText(_translate("Dialog", "Save"))
             self.UploadTripBillScreenshot_button.setText(_translate("Dialog", "Upload Attachment"))
             self.PickupKM_label.setText(_translate("Dialog", "Pickup KM"))
-            self.DayOffReason_label.setText(_translate("Dialog", "DayOff Reason"))
             self.ReturnKMLabel.setText(_translate("Dialog", "Return KM"))
             self.ReturnKMText.setPlaceholderText(_translate("Dialog", "50 KM"))
             self.PickupKM_text.setPlaceholderText(_translate("Dialog", "30 KM"))
@@ -221,7 +210,7 @@ class Ui_Activity(object):
             self.PickupKM_PushButton.setText(_translate("Dialog", "Upload Attachment"))
             self.AccidentBill_button.setText(_translate("Dialog", "Upload Attachment"))
             self.UploadFuelBill_PushButton.setText(_translate("Dialog", "Upload Attachment"))
-            self.DayoffLabel.setText(_translate("Dialog", "DayOff"))
+            self.AccidentLabel.setText(_translate("Dialog", "Accident"))
             self.KMnumberFueledAtLabel.setText(_translate("Dialog", "KM number fueled at"))
             self.KMnumberFueledAtText.setPlaceholderText(_translate("Dialog", "150"))
             self.IsFueledLabel.setText(_translate("Dialog", "Fueled"))
@@ -236,8 +225,8 @@ class Ui_Activity(object):
             self.AlertLabel.setText(_translate("Dialog", "Captain\'s license is about to expire"))
             self.DeductionLabel.setText(_translate("Dialog", "Deduction"))
             self.DeductionText.setPlaceholderText(_translate("Dialog", "200"))
-            self.DayoffcheckBoxYes.setText(_translate("Dialog", "Yes"))
-            self.DayoffcheckBoxNo.setText(_translate("Dialog", "No"))
+            self.AccdientCheckBoxYes.setText(_translate("Dialog", "Yes"))
+            self.AccdientcheckBoxNo.setText(_translate("Dialog", "No"))
             self.TripShift12CheckBox.setText(_translate("Dialog", "12/12"))
             self.TripShift8CheckBox.setText(_translate("Dialog", "8/8/8"))
             self.DailyRentCheckBox.setText(_translate("Dialog", "DailyRent"))
@@ -248,9 +237,7 @@ class Ui_Activity(object):
             self.ViewFuelBill_PushButton.setText(_translate("Dialog", "View Attachment"))
             self.ViewAccidentBill_PushButton.setText(_translate("Dialog", "View Attachment"))
             self.ViewTripBillScreenshot_PushButton.setText(_translate("Dialog", "View Attachment"))
-            self.DayOffReasonCheckBox.setItemText(0,_translate("Dialog", "Select an Option")) 
-            self.DayOffReasonCheckBox.setItemText(1,_translate("Dialog", "Vacation"))   
-            self.DayOffReasonCheckBox.setItemText(2,_translate("Dialog", "Accident")) 
+            
           
             self.SetCurrentDate()
             self.setHideAlertsFieldsDefaultSettings(Dialog)
@@ -267,9 +254,9 @@ class Ui_Activity(object):
             self.UploadTripBillScreenshot_button.clicked.connect(self.UploadTripBill) 
             self.UploadFuelBill_PushButton.clicked.connect(self.UploadFuelBill)
             self.ExpensesComboBox.currentIndexChanged.connect(self.ExpneseHandler)
-            self.DayoffcheckBoxYes.clicked.connect( lambda : self.setDayoffYes(Dialog))
-            self.DayoffcheckBoxNo.clicked.connect(lambda : self.setDayOffNo(Dialog))
-            self.DayOffReasonCheckBox.currentIndexChanged.connect( self.DayOffReasonHandler)
+            self.AccdientCheckBoxYes.clicked.connect( lambda : self.SetAccidentYes(Dialog))
+            self.AccdientcheckBoxNo.clicked.connect(lambda : self.SetAccidentNo(Dialog))
+           
             self.AccidentBill_button.hide()
         def SetCurrentDate(self):
              CurrentDate=datetime.now()
@@ -286,10 +273,10 @@ class Ui_Activity(object):
             Dialog.resize(628, 454)
             
 
-        def SaveAndDailogResizeWithDayoffNo(self,Dialog):
+        def SaveAndDailogResizeWithAccdientNo(self,Dialog):
             self.SaveAndDailogResizeWithHidingAlert(Dialog)
             
-        def SaveAndDailogResizeWithDayoffYes(self,Dialog):
+        def SaveAndDailogResizeWithAccdientYes(self,Dialog):
             self.SaveButton.move(280,150)
             Dialog.resize(628, 190)
             
@@ -302,6 +289,15 @@ class Ui_Activity(object):
             self.SaveAndDailogResizeWithoutHidingAlert(Dialog)
             self.AlertLabel.show()
             self.ShowAllUpComingAlerts_PushButton.show()
+        
+        def MoveExpensesComboBoxandLabelInCaseOfNoAccdient(self):
+            self.ExpensesComboBox.move(120, 220)
+            self.Expenses_label.move(20, 220)
+            
+            
+        def MoveExpensesComboBoxandLabelInCaseOfAccdient(self):
+            self.ExpensesComboBox.move(110, 80)
+            self.Expenses_label.move(20, 85)
       
         def setButtonVisiblityDefautlSettings(self):
             self.ViewAccidentBill_PushButton.hide()
@@ -315,23 +311,22 @@ class Ui_Activity(object):
     
         
         def DisableDayOffReasonVisiablity(self):
-            self.DayOffReason_label.hide()
-            self.DayOffReasonCheckBox.hide()
             self.AccidentDescription_Label.hide()
-            self.DayOffReasonDescription_Text.hide()
+            self.AccdientReasonDescription_Text.hide()
+
             
         def EnableayOffReasonVisiablity(self):
-            self.DayOffReason_label.show()
-            self.DayOffReasonCheckBox.show()
+            self.AccidentDescription_Label.show()
+            self.AccdientReasonDescription_Text.show()
+            
+          
             
             
-        def setDayoffYes(self,Dialog):
-            self.DayoffcheckBoxNo.setChecked(False)
+        def SetAccidentYes(self,Dialog):
+            self.AccdientcheckBoxNo.setChecked(False)
             self.setButtonVisiblityDefautlSettings()
             self.FuelLabel.hide()
             self.FuelText.hide()
-            self.Expenses_label.hide()
-            self.ExpensesComboBox.hide()
             self.GrossIncomeLabel.hide()
             self.GrossIncomeText.hide()
             self.UploadTripBillScreenshot_button.hide()
@@ -357,20 +352,18 @@ class Ui_Activity(object):
             self.IsFueledCheckBoxNo.hide()
             self.LaborText.hide()
             self.EnableayOffReasonVisiablity()
-            self.SaveAndDailogResizeWithDayoffYes(Dialog)
-            
-
-
+            self.SaveAndDailogResizeWithAccdientYes(Dialog)
+            self.MoveAlertFieldsInCaseOfAccdeint()
+            self.MoveAlertFieldsInCaseOfNoAccdeint()
+            self.EnableayOffReasonVisiablity()
+            self.MoveExpensesComboBoxandLabelInCaseOfAccdient()
                 
                   
-        def setDayOffNo(self,Dialog):
-            self.DayoffcheckBoxYes.setChecked(False)
+        def SetAccidentNo(self,Dialog):
+            self.AccdientCheckBoxYes.setChecked(False)
       
             self.FuelLabel.show()
             self.FuelText.show()
-            
-            self.Expenses_label.show()
-            self.ExpensesComboBox.show()
             self.GrossIncomeLabel.show()
             self.GrossIncomeText.show()
             self.UploadTripBillScreenshot_button.show()
@@ -395,8 +388,8 @@ class Ui_Activity(object):
             self.LaborText.hide()
             self.AccidentBill_button.hide()
             self.DisableDayOffReasonVisiablity()
-            self.SaveAndDailogResizeWithDayoffNo(Dialog)
-      
+            self.SaveAndDailogResizeWithAccdientNo(Dialog)
+            self.MoveExpensesComboBoxandLabelInCaseOfNoAccdient()
      
           
         def ExpneseHandler(self):
@@ -414,30 +407,16 @@ class Ui_Activity(object):
 #            if(CheckBoxStatus!='Select an Option'):
                 
       
-        def  MoveAlertFieldsInCaseDayOffWithoutAccdeint(self):
+        def  MoveAlertFieldsInCaseOfNoAccdeint(self):
             self.AlertLabel.move(50,110)
             self.ShowAllUpComingAlerts_PushButton.move(300,110)
             
             
-        def  MoveAlertFieldsInCaseDayOffWithAccdeint(self):
+        def  MoveAlertFieldsInCaseOfAccdeint(self):
             self.AlertLabel.move(50,160)
             self.ShowAllUpComingAlerts_PushButton.move(300,160)
             
             
-        def DayOffReasonHandler(self):
-            ChechBoxStatus=str(self.DayOffReasonCheckBox.currentText())
-            if(ChechBoxStatus=='Accident'):
-                self.DayOffReasonDescription_Text.show()
-                self.AccidentDescription_Label.show()
-                self.MoveAlertFieldsInCaseDayOffWithAccdeint()
-                
-            else:
-                self.DayOffReasonDescription_Text.hide()
-                self.AccidentDescription_Label.hide()
-                self.MoveAlertFieldsInCaseDayOffWithoutAccdeint()
-           
-            
-                
         def OpenMaintainceTable(self):
             self._OpenMaintainceTableUI= QtWidgets.QDialog()
             self._OpenMaintainceTable= Ui_DayOffMaintainceTable()
