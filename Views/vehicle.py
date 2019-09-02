@@ -8,45 +8,52 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from RentalCarCommen import RentalCarCommon
+from PyQt5.QtCore import QRegExp , Qt
+from PyQt5.QtWidgets import QMessageBox
+
+
+from PyQt5.QtGui import QRegExpValidator
 class Ui_Vehicle(object):
     def __init__(self):
      self._RentalCarCommon=RentalCarCommon()
+     self.bSaveButtonActive= True
+#     self._sender = self.sender()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(553, 542)
-        self.VehicleTextLabel = QtWidgets.QLabel(Dialog)
-        self.VehicleTextLabel.setGeometry(QtCore.QRect(20, 70, 61, 16))
-        self.VehicleTextLabel.setObjectName("VehicleTextLabel")
+        self.VehicleTypeLabel = QtWidgets.QLabel(Dialog)
+        self.VehicleTypeLabel.setGeometry(QtCore.QRect(20, 70, 61, 16))
+        self.VehicleTypeLabel.setObjectName("VehicleTypeLabel")
         self.PeriodicalMaintainceLabel = QtWidgets.QLabel(Dialog)
         self.PeriodicalMaintainceLabel.setGeometry(QtCore.QRect(20, 110, 121, 16))
         self.PeriodicalMaintainceLabel.setObjectName("PeriodicalMaintainceLabel")
-        self.label_4 = QtWidgets.QLabel(Dialog)
-        self.label_4.setGeometry(QtCore.QRect(20, 150, 101, 16))
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4")
-        self.lineEdit = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit.setGeometry(QtCore.QRect(100, 70, 71, 20))
-        self.lineEdit.setObjectName("lineEdit")
-        self.label_7 = QtWidgets.QLabel(Dialog)
-        self.label_7.setGeometry(QtCore.QRect(170, 150, 81, 16))
-        self.label_7.setObjectName("label_7")
+        self.LastPerodicMaintaince = QtWidgets.QLabel(Dialog)
+        self.LastPerodicMaintaince.setGeometry(QtCore.QRect(20, 150, 101, 16))
+        self.LastPerodicMaintaince.setObjectName("LastPerodicMaintaince")
+        self.VehicleTypeText = QtWidgets.QLineEdit(Dialog)
+        self.VehicleTypeText.setGeometry(QtCore.QRect(100, 70, 115, 20))
+        self.VehicleTypeText.setObjectName("lineEdit")
+        self.OwnerNameLabel = QtWidgets.QLabel(Dialog)
+        self.OwnerNameLabel.setGeometry(QtCore.QRect(170, 150, 81, 16))
+        self.OwnerNameLabel.setObjectName("OwnerNameLabel")
         self.OwnerNameText = QtWidgets.QLineEdit(Dialog)
         self.OwnerNameText.setEnabled(False)
         self.OwnerNameText.setGeometry(QtCore.QRect(240, 150, 101, 21))
         self.OwnerNameText.setObjectName("OwnerNameText")
-        self.lineEdit_8 = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit_8.setGeometry(QtCore.QRect(60, 230, 101, 20))
-        self.lineEdit_8.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.lineEdit_8.setObjectName("lineEdit_8")
-        self.lineEdit_9 = QtWidgets.QLineEdit(Dialog)
-        self.lineEdit_9.setGeometry(QtCore.QRect(260, 230, 121, 20))
-        self.lineEdit_9.setObjectName("lineEdit_9")
-        self.label_9 = QtWidgets.QLabel(Dialog)
-        self.label_9.setGeometry(QtCore.QRect(190, 230, 41, 16))
-        self.label_9.setObjectName("label_9")
-        self.PhoneNumberLabel = QtWidgets.QLabel(Dialog)
-        self.PhoneNumberLabel.setGeometry(QtCore.QRect(20, 230, 81, 16))
-        self.PhoneNumberLabel.setObjectName("PhoneNumberLabel")
+        self.PhoneNumberText = QtWidgets.QLineEdit(Dialog)
+        self.PhoneNumberText.setGeometry(QtCore.QRect(60, 230, 101, 20))
+        self.PhoneNumberText.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
+        self.PhoneNumberText.setObjectName("PhoneNumberText")
+        self.PhoneNumberText.setMaxLength(11)
+        self.EmailAddressText = QtWidgets.QLineEdit(Dialog)
+        self.EmailAddressText.setGeometry(QtCore.QRect(230, 230, 150, 20))
+        self.EmailAddressText.setObjectName("EmailAddressText")
+        self.EmailAddressLabel = QtWidgets.QLabel(Dialog)
+        self.EmailAddressLabel.setGeometry(QtCore.QRect(190, 230, 41, 16))
+        self.EmailAddressLabel.setObjectName("EmailAddressLabel")
+        self.PhoneNumberTextLabel = QtWidgets.QLabel(Dialog)
+        self.PhoneNumberTextLabel.setGeometry(QtCore.QRect(20, 230, 81, 16))
+        self.PhoneNumberTextLabel.setObjectName("PhoneNumberTextLabel")
         self.ContractTypeLabel = QtWidgets.QLabel(Dialog)
         self.ContractTypeLabel.setGeometry(QtCore.QRect(20, 270, 81, 16))
         self.ContractTypeLabel.setObjectName("ContractTypeLabel")
@@ -109,7 +116,7 @@ class Ui_Vehicle(object):
         self.LicenseNumberLabel.setGeometry(QtCore.QRect(20, 30, 81, 16))
         self.LicenseNumberLabel.setObjectName("LicenseNumberLabel")
         self.UploadCarPhoto_PushButton = QtWidgets.QPushButton(Dialog)
-        self.UploadCarPhoto_PushButton.setGeometry(QtCore.QRect(190, 70, 101, 23))
+        self.UploadCarPhoto_PushButton.setGeometry(QtCore.QRect(235, 70, 101, 23))
         self.UploadCarPhoto_PushButton.setObjectName("UploadCarPhoto_PushButton")
         self.UploadLicensePhoto_PushButton = QtWidgets.QPushButton(Dialog)
         self.UploadLicensePhoto_PushButton.setGeometry(QtCore.QRect(370, 30, 111, 23))
@@ -145,14 +152,13 @@ class Ui_Vehicle(object):
         self.ContractExpiryDateEdit.setGeometry(QtCore.QRect(330, 310, 81, 21))
         self.ContractExpiryDateEdit.setCalendarPopup(True)
         self.ContractExpiryDateEdit.setObjectName("ContractExpiryDateEdit")
-        self.KMatServiceStartDateEdit = QtWidgets.QDateEdit(Dialog)
-        self.KMatServiceStartDateEdit.setGeometry(QtCore.QRect(330, 350, 81, 21))
-        self.KMatServiceStartDateEdit.setCalendarPopup(True)
-        self.KMatServiceStartDateEdit.setObjectName("KMatServiceStartDateEdit")
-        self.KMatServiceStartDateEdit_2 = QtWidgets.QDateEdit(Dialog)
-        self.KMatServiceStartDateEdit_2.setGeometry(QtCore.QRect(330, 400, 81, 21))
-        self.KMatServiceStartDateEdit_2.setCalendarPopup(True)
-        self.KMatServiceStartDateEdit_2.setObjectName("KMatServiceStartDateEdit_2")
+        self.KMatServiceStartText = QtWidgets.QLineEdit(Dialog)
+        self.KMatServiceStartText.setGeometry(QtCore.QRect(330, 350, 81, 21))
+        self.KMatServiceStartText.setObjectName("KMatServiceStartText")
+        self.InsuranceExpiryDate = QtWidgets.QDateEdit(Dialog)
+        self.InsuranceExpiryDate.setGeometry(QtCore.QRect(330, 400, 81, 21))
+        self.InsuranceExpiryDate.setCalendarPopup(True)
+        self.InsuranceExpiryDate.setObjectName("InsuranceExpiryDate")
         self.ViewLicensePhoto_PushButton = QtWidgets.QPushButton(Dialog)
         self.ViewLicensePhoto_PushButton.setEnabled(True)
         self.ViewLicensePhoto_PushButton.setGeometry(QtCore.QRect(370, 30, 111, 23))
@@ -203,15 +209,15 @@ class Ui_Vehicle(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Vehicle"))
-        self.VehicleTextLabel.setText(_translate("Dialog", "Vehicle Type"))
+        self.VehicleTypeLabel.setText(_translate("Dialog", "Vehicle Type"))
         self.PeriodicalMaintainceLabel.setText(_translate("Dialog", "Periodical Maintenance"))
-        self.lineEdit.setPlaceholderText(_translate("Dialog", "BYD Auto"))
-        self.label_7.setText(_translate("Dialog", "Owner name"))
+        self.VehicleTypeText.setPlaceholderText(_translate("Dialog", "Daewoo/Lanos/2010"))
+        self.OwnerNameLabel.setText(_translate("Dialog", "Owner name"))
         self.OwnerNameText.setPlaceholderText(_translate("Dialog", "Mohamed Yones"))
-        self.lineEdit_8.setPlaceholderText(_translate("Dialog", "010058104514"))
-        self.lineEdit_9.setPlaceholderText(_translate("Dialog", "example@gmail.com"))
-        self.label_9.setText(_translate("Dialog", "Email"))
-        self.PhoneNumberLabel.setText(_translate("Dialog", "Phone"))
+        self.PhoneNumberText.setPlaceholderText(_translate("Dialog", "010058104514"))
+        self.EmailAddressText.setPlaceholderText(_translate("Dialog", "example@gmail.com"))
+        self.EmailAddressLabel.setText(_translate("Dialog", "Email"))
+        self.PhoneNumberTextLabel.setText(_translate("Dialog", "Phone"))
         self.ContractTypeLabel.setText(_translate("Dialog", "Contract Type"))
         self.ContractTypeCheckBox.setItemText(0, _translate("Dialog", "Daily"))
         self.ContractTypeCheckBox.setItemText(1, _translate("Dialog", "Monthly"))
@@ -247,16 +253,13 @@ class Ui_Vehicle(object):
         self.ViewInsurancePolicy_PushButton.setText(_translate("Dialog", "View Document"))
         self.GenerateReport_PushButton.setText(_translate("Dialog", "Generate Report"))
         self.IntailValueLabel.setText(_translate("Dialog", "Intial Value"))
-        self.IntialValueText.setText(_translate("Dialog", "19"))
-        self.IntialValueText.setPlaceholderText(_translate("Dialog", "Mohamed Yones"))
+        self.IntialValueText.setPlaceholderText(_translate("Dialog", "19"))
         self.FinalValueLabel.setText(_translate("Dialog", "Final Value "))
-        self.DepreciationPeriodText.setText(_translate("Dialog", "19"))
-        self.DepreciationPeriodText.setPlaceholderText(_translate("Dialog", "Mohamed Yones"))
+        self.DepreciationPeriodText.setPlaceholderText(_translate("Dialog", "19"))
         self.DepreciationPeriodLabel.setText(_translate("Dialog", "Depreciation period "))
-        self.FinalValueText.setText(_translate("Dialog", "19"))
-        self.FinalValueText.setPlaceholderText(_translate("Dialog", "Mohamed Yones"))
-        self.label_8.setText(_translate("Dialog", "Month")) 
-
+        self.FinalValueText.setPlaceholderText(_translate("Dialog", "19"))
+        self.label_8.setText(_translate("Dialog", "Month"))
+        self.KMatServiceStartText.setPlaceholderText(_translate("Dialog","5000 KM"))
         self.setButtonVisiblityDefautlSettings()
         self.UploadLicensePhoto_PushButton.clicked.connect(self.UploadLicensePhoto)
         self.UploadContractType_PushButton.clicked.connect(self.UploadContractType)
@@ -264,9 +267,145 @@ class Ui_Vehicle(object):
         self.UploadInsurancePolicy_PushButton.clicked.connect(self.UploadInsurancePolicy)
         self.UploadCarPhoto_PushButton.clicked.connect(self.UploadCarPhoto)
         self.OwnedByThirdPartyCheckBox.clicked.connect(self.EnableOwnedByThirdPartyFields)
+        self.IntialValueText.textChanged[str].connect(self.IntialValueTextStatus)
+        self.IntialValueText.setValidator(QtGui.QIntValidator())
+        self.DepreciationPeriodText.textChanged[str].connect(self.DepreciationPeriodTextStatus)
+        self.DepreciationPeriodText.setValidator(QtGui.QIntValidator())
+        self.FinalValueText.textChanged[str].connect(self.FinalValueTextStatus)
+        self.FinalValueText.setValidator(QtGui.QIntValidator())
+        self.EmailAddressText.textChanged[str].connect(self.EmailAddressTextStatus)
+        self.EmailAddressText.setValidator(self._RentalCarCommon.EmailRegexValidator)
+        self.PhoneNumberText.textChanged[str].connect(self.PhoneNumberTextStatus)
+        self.PhoneNumberText.setValidator(self._RentalCarCommon.IntegerRegexValidator)
+        self.OwnerNameText.setValidator(self._RentalCarCommon.StringRegexValidator)
+        self.OwnerNameText.textChanged[str].connect(self.OwnerNameTextStatus)
+        self.KMatServiceStartText.textChanged[str].connect(self.KMAtServiceStartTextStatus)
+        self.KMatServiceStartText.setValidator(self._RentalCarCommon.IntegerRegexValidator)
+        self.VehicleTypeText.textChanged[str].connect(self.VehicleTypeTextStatus)
+        self.VehicleTypeText.setValidator(self._RentalCarCommon.VehicleTypeRegexValidator)
+        self.Save_PushButton.clicked.connect(lambda: self.InsertInDatabase(Dialog))
+        self.LicenseNumberTextBox.textChanged[str].connect(self.LicenseNumberTextBoxCheckStatus)
+        
 
-       
-     
+
+        
+    def LicenseNumberTextBoxCheckStatus(self):
+        if(len(self.LicenseNumberTextBox.text())<14):
+            self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+            
+    def IntialValueTextStatus(self):
+        if(self.IntialValueText.text()==""):
+            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+    
+    def DepreciationPeriodTextStatus(self):
+        if(self.DepreciationPeriodText.text()==""):
+            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+
+    def FinalValueTextStatus(self):
+        if(self.FinalValueText.text()==""):
+            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+            
+
+    def EmailAddressTextStatus(self):
+        if('@' and '.com' not in self.EmailAddressText.text()):
+            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False   
+        else:
+            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+            
+    
+    def PhoneNumberTextStatus(self):
+        if(len(self.PhoneNumberText.text())<11):
+            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+            
+    def KMAtServiceStartTextStatus(self):
+        if(self.KMatServiceStartText.text()==""):
+            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+            
+            
+    def VehicleTypeTextStatus(self):
+        if((self.VehicleTypeText.text()).count("/")!=2):
+            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+    
+    def OwnerNameTextStatus(self):
+        if(self.OwnerNameText.text()==""):
+            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        else:
+            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
+            self.bSaveButtonActive=True
+
+    def ValidateNoEmptyFields(self):
+        if (self.LicenseNumberTextBox.text()==''):
+             self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+             self.bSaveButtonActive=False
+        if (self.VehicleTypeText.text()==''):
+            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.KMatServiceStartText.text()==''):
+            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.PhoneNumberText.text()==''):
+            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.EmailAddressText.text()==''):
+            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.FinalValueText.text()==''):
+            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.OwnedByThirdPartyCheckBox.isChecked()== False and self.DepreciationPeriodText.text()==''):
+            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if (self.OwnedByThirdPartyCheckBox.isChecked()== False and self.IntialValueText.text()==''):
+            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        if(self.OwnedByThirdPartyCheckBox.isChecked()== True and self.OwnerNameText.text()==""):
+            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+            self.bSaveButtonActive=False
+        
+        
+            
+            
+    def InsertInDatabase(self,Dialog):
+        self.ValidateNoEmptyFields()
+        if (self.bSaveButtonActive==False):
+#            QtWidgets.QMessageBox.question(self, 'PyQt5 message', "Do you want to save?", QtWidgets.QMessageBox.Yes)
+             QMessageBox().about(Dialog,"Error","Please Enter Required Fields")
+        
+        
+        
+        
+    
     def UploadLicensePhoto(self):
         ImagePath=self._RentalCarCommon.openFileNameDialog()
         
@@ -295,14 +434,23 @@ class Ui_Vehicle(object):
             self.UploadOwnerID_PushButton.setEnabled(True)
             self.IntialValueText.setEnabled(False)
             self.FinalValueText.setEnabled(False)
+            self.IntialValueText.clear()
+            self.FinalValueText.clear()
             self.DepreciationPeriodText.setEnabled(False)
+            self.IntialValueText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
+            self.FinalValueText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
+            self.DepreciationPeriodText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
+            
         if  (self.OwnedByThirdPartyCheckBox.isChecked()!=True):
             self.OwnerNameText.setEnabled(False)
             self.UploadOwnerID_PushButton.setEnabled(False)
+            self.OwnerNameText.clear()
+            self.OwnerNameText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
             self.IntialValueText.setEnabled(True)
             self.FinalValueText.setEnabled(True)
             self.DepreciationPeriodText.setEnabled(True)
-        
+
+            
     
 if __name__ == "__main__":
     import sys
