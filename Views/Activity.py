@@ -7,15 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets 
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog ,QMessageBox
 from PyQt5.QtCore import QDate
 from datetime import datetime
-from RentalCarCommen import RentalCarCommon
+from RentalCarCommen import RentalCarCommonUi
 from DayOffMaintainceTable import Ui_DayOffMaintainceTable
 from NonOperatingExpenses import Ui_NonOperatingExpenses
 class Ui_Activity(object):
         def __init__(self):
-            self._RentalCarCommon=RentalCarCommon()
+            self._RentalCarCommonUi=RentalCarCommonUi()
         def setupUi(self,Dialog):
             Dialog.setObjectName("Dialog")
             Dialog.resize(628, 454)
@@ -31,6 +31,7 @@ class Ui_Activity(object):
             self.CarPlateNumber_text = QtWidgets.QLineEdit(Dialog)
             self.CarPlateNumber_text.setGeometry(QtCore.QRect(110, 20, 101, 20))
             self.CarPlateNumber_text.setObjectName("CarPlateNumber_text")
+            self.CarPlateNumber_text.setMaxLength(9)
             self.CarPlateNumber_label = QtWidgets.QLabel(Dialog)
             self.CarPlateNumber_label.setGeometry(QtCore.QRect(20, 20, 91, 16))
             self.CarPlateNumber_label.setObjectName("CarPlateNumber_label")
@@ -256,8 +257,57 @@ class Ui_Activity(object):
             self.ExpensesComboBox.currentIndexChanged.connect(self.ExpneseHandler)
             self.AccdientCheckBoxYes.clicked.connect( lambda : self.SetAccidentYes(Dialog))
             self.AccdientcheckBoxNo.clicked.connect(lambda : self.SetAccidentNo(Dialog))
-           
             self.AccidentBill_button.hide()
+            self.SaveButton.clicked.connect(lambda: self.onSaveClick(Dialog))
+            
+            self.CarPlateNumber_text.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsLengthofStringVaild(self.CarPlateNumber_text,self._RentalCarCommonUi.MaxLenghtOfCarPlateNumber))
+            self.CarPlateNumber_text.setValidator(self._RentalCarCommonUi.CarPlateNumberValidtor)
+            self.GrossIncomeText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.GrossIncomeText))
+            self.GrossIncomeText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+            self.CaptainPaymentText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.CaptainPaymentText))
+            self.CaptainPaymentText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+            self.DeductionText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.DeductionText))
+            self.DeductionText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+            self.PickupKM_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.PickupKM_text))
+            self.PickupKM_text.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+            self.FuelText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.FuelText))
+            self.FuelText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+            self.KMnumberFueledAtText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.KMnumberFueledAtText))
+            self.KMnumberFueledAtText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        
+# =============================================================================
+#         Accdient Description Valdation you need to work on it 
+# =============================================================================
+            
+            
+#            self.
+
+         
+        
+        def onSaveClick(self,Dialog):
+            textBoxeswithCheckboxNames =[self.CarPlateNumber_text,self.GrossIncomeText,self.CaptainPaymentText,self.DeductionText,self.PickupKM_text,
+                                         self.ReturnKMText]                             
+            self._RentalCarCommonUi.OnClickSaveButton(textBoxeswithCheckboxNames)
+            
+            if(self.IsFueledCheckBoxYes.isChecked()== True and self.FuelText.text()==""):
+                self.FuelText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+                self._RentalCarCommonUi.bSaveButtonActive=False
+                
+            if(self.IsFueledCheckBoxYes.isChecked()== True and self.KMnumberFueledAtText.text()==""):
+                    self.KMnumberFueledAtText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
+                    self._RentalCarCommonUi.bSaveButtonActive=False
+#####################################################################
+#Code refactor in case if the checbox no set BsaveButton.No
+######################################################################                    
+            if(self.IsFueledCheckBoxNo.isChecked()== True and self.FuelText.text()==""):
+                self._RentalCarCommonUi.bSaveButtonActive=True
+                
+            if(self.IsFueledCheckBoxNo.isChecked()== True and self.KMnumberFueledAtText.text()==""):
+                    self._RentalCarCommonUi.bSaveButtonActive=False
+                    
+            if (self._RentalCarCommonUi.bSaveButtonActive==False):
+                    QMessageBox().about(Dialog,"Error","Please Enter Required Fields")           
+            
         def SetCurrentDate(self):
              CurrentDate=datetime.now()
              self.TodayDateTime.setDate(QDate(CurrentDate.year,CurrentDate.month,CurrentDate.day))
@@ -318,6 +368,7 @@ class Ui_Activity(object):
         def EnableayOffReasonVisiablity(self):
             self.AccidentDescription_Label.show()
             self.AccdientReasonDescription_Text.show()
+            
             
           
             
@@ -444,6 +495,11 @@ class Ui_Activity(object):
             self.FuelText.setEnabled(False)
             self.UploadFuelBill_PushButton.setEnabled(False)
             self.KMnumberFueledAtText.setEnabled(False)
+            self.FuelText.clear()
+            self.KMnumberFueledAtText.clear()
+            self.FuelText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
+            self.KMnumberFueledAtText.setStyleSheet("QLineEdit { background:gray border-style: outset;border-width: 1px;border-color: black;}")
+            
                 
         def Enable8Shift(self):
             self.TripShift12CheckBox.setChecked(False)
@@ -463,19 +519,22 @@ class Ui_Activity(object):
             self.DailyRentCheckBox.setChecked(True)
             
         def UploadPickUpKMScreenShots(self):
-            ImagePath=self._RentalCarCommon.openFileNameDialog()
+            ImagePath=self._RentalCarCommonUi.openFileNameDialog()
             
         def UploadReturnKMScreenShots(self):
-            ImagePath=self._RentalCarCommon.openFileNameDialog()
+            ImagePath=self._RentalCarCommonUi.openFileNameDialog()
             
         def UploadFuelBill(self):
-            ImagePath=self._RentalCarCommon.openFileNameDialog()
+            ImagePath=self._RentalCarCommonUi.openFileNameDialog()
         
         def UploadAccidentBil(self):
-            ImagePath=self._RentalCarCommon.openFileNameDialog()
+            ImagePath=self._RentalCarCommonUi.openFileNameDialog()
         
         def UploadTripBill(self):
-            ImagePath=self._RentalCarCommon.openFileNameDialog()
+            ImagePath=self._RentalCarCommonUi.openFileNameDialog()
+            
+            
+            
 
 if __name__ == "__main__":
     import sys

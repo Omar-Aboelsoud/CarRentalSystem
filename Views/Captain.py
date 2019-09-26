@@ -7,10 +7,17 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from RentalCarCommen import RentalCarCommon
+from PyQt5.QtWidgets import QMessageBox
+from RentalCarCommen import RentalCarCommonUi
+from RentalCarCaptainDatabase import RentalCarCaptaindb
 class Ui_Captian(object):
     def __init__(self):
-        self._RentalCarCommon=RentalCarCommon()
+        self._RentalCarCommonUi=RentalCarCommonUi()
+        self.RentalCarCaptaindb=RentalCarCaptaindb()
+        self.AgreementTypeImagePath=None
+        self.DocumentIdImagePath=None
+        self.CertificationImagePath=[]
+        self.LisenceImagePath=None
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(556, 422)
@@ -81,7 +88,7 @@ class Ui_Captian(object):
         self.CaptianName_text.setObjectName("CaptianName_text")
         self.IDnumber_text = QtWidgets.QLineEdit(Dialog)
         self.IDnumber_text.setGeometry(QtCore.QRect(100, 60, 121, 20))
-        self.IDnumber_text.setInputMethodHints(QtCore.Qt.ImhNone)
+        self.IDnumber_text.setMaxLength(14)
         self.IDnumber_text.setObjectName("IDnumber_text")
         self.LisenceNumberText = QtWidgets.QLineEdit(Dialog)
         self.LisenceNumberText.setGeometry(QtCore.QRect(100, 100, 121, 20))
@@ -90,9 +97,10 @@ class Ui_Captian(object):
         self.PhoneText = QtWidgets.QLineEdit(Dialog)
         self.PhoneText.setGeometry(QtCore.QRect(70, 180, 101, 20))
         self.PhoneText.setObjectName("PhoneText")
-        self.Emai_text = QtWidgets.QLineEdit(Dialog)
-        self.Emai_text.setGeometry(QtCore.QRect(230, 180, 121, 20))
-        self.Emai_text.setObjectName("Emai_text")
+        self.PhoneText.setMaxLength(11)
+        self.Email_text = QtWidgets.QLineEdit(Dialog)
+        self.Email_text.setGeometry(QtCore.QRect(230, 180, 121, 20))
+        self.Email_text.setObjectName("Email_text")
         self.Fees_text = QtWidgets.QLineEdit(Dialog)
         self.Fees_text.setGeometry(QtCore.QRect(120, 260, 91, 20))
         self.Fees_text.setObjectName("Fees_text")
@@ -109,11 +117,11 @@ class Ui_Captian(object):
         self.LisenceNumberDateEdit.setMinimumDateTime(QtCore.QDateTime(QtCore.QDate(2019, 1, 1), QtCore.QTime(0, 0, 0)))
         self.LisenceNumberDateEdit.setCalendarPopup(True)
         self.LisenceNumberDateEdit.setObjectName("LisenceNumberDateEdit")
-        self.dateEdit_2 = QtWidgets.QDateEdit(Dialog)
-        self.dateEdit_2.setGeometry(QtCore.QRect(120, 290, 91, 22))
-        self.dateEdit_2.setMinimumDate(QtCore.QDate(2019, 9, 14))
-        self.dateEdit_2.setCalendarPopup(True)
-        self.dateEdit_2.setObjectName("dateEdit_2")
+        self.DateStartService = QtWidgets.QDateEdit(Dialog)
+        self.DateStartService.setGeometry(QtCore.QRect(120, 290, 91, 22))
+        self.DateStartService.setMinimumDate(QtCore.QDate(2019, 9, 14))
+        self.DateStartService.setCalendarPopup(True)
+        self.DateStartService.setObjectName("DateStartService")
         self.ViewAgreementDocument_PushButton = QtWidgets.QPushButton(Dialog)
         self.ViewAgreementDocument_PushButton.setGeometry(QtCore.QRect(230, 220, 121, 23))
         self.ViewAgreementDocument_PushButton.setObjectName("ViewAgreementDocument_PushButton")
@@ -159,10 +167,10 @@ class Ui_Captian(object):
         self.AgreementType_combobox.setItemText(4, _translate("Dialog", "Percentage %"))
         self.UploadAgreementType_PushButton.setText(_translate("Dialog", "Attach Document "))
         self.CaptianName_text.setPlaceholderText(_translate("Dialog", "ex.Ahmed Younes"))
-        self.IDnumber_text.setPlaceholderText(_translate("Dialog", " 14 Digtial of ID number"))
-        self.LisenceNumberText.setPlaceholderText(_translate("Dialog", " 14 Digtial of Lisence"))
+        self.IDnumber_text.setPlaceholderText(_translate("Dialog", " 14 digit of ID number"))
+        self.LisenceNumberText.setPlaceholderText(_translate("Dialog", " 14 digit of Lisence"))
         self.PhoneText.setPlaceholderText(_translate("Dialog", "01123456514"))
-        self.Emai_text.setPlaceholderText(_translate("Dialog", "Example@gmail.com"))
+        self.Email_text.setPlaceholderText(_translate("Dialog", "Example@gmail.com"))
         self.Fees_text.setPlaceholderText(_translate("Dialog", "5000 L.E"))
         self.Save_button.setText(_translate("Dialog", "Save"))
         self.ViewAgreementDocument_PushButton.setText(_translate("Dialog", "View Document "))
@@ -179,6 +187,101 @@ class Ui_Captian(object):
         self.UploadCertification_PushButton.clicked.connect(self.UploadCertification)       
         self.UploadDocumentId_PushButton.clicked.connect(self.UploadDocumentId)
         self.UploadLisence_PushButton.clicked.connect(self.UploadLisence)
+        self.Save_button.clicked.connect(lambda:self.onSaveClick(Dialog))
+        
+        self.IDnumber_text.returnPressed.connect(lambda: self.IsRecoredExist(self.IDnumber_text.text() , Dialog))
+        self.LisenceNumberText.returnPressed.connect(lambda: self.IsRecoredExist(self.LisenceNumberText.text()))
+        
+        
+        self.CaptianName_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.CaptianName_text))
+        self.CaptianName_text.setValidator(self._RentalCarCommonUi.StringRegexValidator)
+        self.IDnumber_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsLengthofStringVaild(self.IDnumber_text,self._RentalCarCommonUi.MaxLenghtofIDNumber))
+        self.IDnumber_text.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.LisenceNumberText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsLengthofStringVaild(self.LisenceNumberText,self._RentalCarCommonUi.MaxLenghtofIDNumber))
+        self.LisenceNumberText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.PhoneText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsLengthofStringVaild(self.PhoneText,self._RentalCarCommonUi.MaxLengthofPhoneNumber))
+        self.PhoneText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.Fees_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.Fees_text))
+        self.Fees_text.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.Email_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.EmailAddressTextStatus(self.Email_text))
+        self.Email_text.setValidator(self._RentalCarCommonUi.EmailRegexValidator)
+        
+        
+        
+    def ReteriveAndRepresentValues(self,fields):
+        
+        self.CaptianName_text.setText(fields[1])
+        self.IDnumber_text.setText(fields[2])
+        self.LisenceNumberText.setText(fields[3])
+        self.CaptianIDExpiryDateEdit.setDate(self._RentalCarCommonUi.StringToDate(fields[4]))
+        self.LisenceNumberDateEdit.setDate(self._RentalCarCommonUi.StringToDate(fields[5]))
+        self.DocumentIdImagePath=fields[6]
+        self.LisenceImagePath=fields[7]
+#        self.CertificationImagePath=fields[8]
+        self.PhoneText.setText(fields[8])
+        self.Email_text.setText(fields[9])
+        self.AgreementType_combobox.setCurrentText(fields[10])
+        self.AgreementTypeImagePath=fields[11]
+        self.Fees_text.setText(fields[12])
+        self.DateStartService.setDate(self._RentalCarCommonUi.StringToDate(fields[13]))
+        
+        
+    def IsRecoredExist(self,Text,Dialog):
+        exist,fields=self.RentalCarCaptaindb.IsRecoredExistCaptain(Text)
+        if(exist==True):
+            RepersentiviefieldsName=[self.CaptianName_text,self.LisenceNumberDateEdit,self.LisenceNumberText,self.UploadAgreementType_PushButton,
+                                     self.UploadCertification_PushButton,self.UploadDocumentId_PushButton,self.UploadLisence_PushButton,
+                                     self.CaptianIDExpiryDateEdit,self.PhoneText,self.AgreementType_combobox,self.Fees_text,self.IDnumber_text,
+                                     self.Email_text,self.DateStartService]
+            self._RentalCarCommonUi.DisableFields(RepersentiviefieldsName)
+            self.ReteriveAndRepresentValues(fields)
+            self.ShowViewButtons()
+        else:
+            reply= QMessageBox.information(Dialog, "Messege", "This Captain infomration is not exist", QMessageBox.Ok)
+        
+    def InsertValuesInCaptainDB(self):
+             CaptainName=self.CaptianName_text.text()
+             IDNumber=self.IDnumber_text.text()
+             LisenceNumber=self.LisenceNumberText.text()
+             IDNumberExpiryDate=self.CaptianIDExpiryDateEdit.date().toString("yyyy-MM-dd")
+             LisenceNumberExpiryDate=self.LisenceNumberDateEdit.date().toString("yyyy-MM-dd")
+             IDnumberImage=self.DocumentIdImagePath
+             LisenceNumberImage=self.LisenceImagePath
+             CertificationImage=self.CertificationImagePath
+             PhoneNumber=self.PhoneText.text()
+             Email=self.Email_text.text()
+             AgreementType=self.AgreementType_combobox.currentText()
+             AgreementTypeImage=self.AgreementTypeImagePath
+             Fees=self.Fees_text.text()
+             DateofStartService=self.DateStartService.date().toString("yyyy-MM-dd")
+             
+             values=[CaptainName, IDNumber, LisenceNumber, IDNumberExpiryDate, LisenceNumberExpiryDate, IDnumberImage, LisenceNumberImage, CertificationImage, PhoneNumber, Email, AgreementType, AgreementTypeImage, Fees, DateofStartService]
+             valueswithNoNone=self.RentalCarCaptaindb.convertNoneToEmptyString(values)
+             self.RentalCarCaptaindb.insertIntoCaptainTable(valueswithNoNone)
+#             for i in valueswithNoNone:
+#                 print (i) 
+             
+    def ShowViewButtons(self):
+        ViewbuttonsNames=[self.ViewAgreementDocument_PushButton,self.ViewCertification_PushButton,self.ViewIDDocument_PushButton,self.ViewLisence_PushButton]
+        self._RentalCarCommonUi.ShowFields(ViewbuttonsNames)    
+    def onSaveClick(self,Dialog):
+        textBoxeswithCheckboxNames =[self.CaptianName_text,self.IDnumber_text,self.LisenceNumberText,self.PhoneText,self.Fees_text,
+                                         self.Email_text]     
+        pushButtons=[self.UploadDocumentId_PushButton,self.UploadLisence_PushButton,self.UploadCertification_PushButton,self.UploadAgreementType_PushButton]                        
+        imagePaths=[self.DocumentIdImagePath,self.LisenceImagePath,self.CertificationImagePath,self.AgreementTypeImagePath]
+        
+        self._RentalCarCommonUi.OnClickSaveButton(textBoxeswithCheckboxNames)
+        self._RentalCarCommonUi.isEmptyOrNoneImagePath(imagePaths,pushButtons)
+            
+        if (self._RentalCarCommonUi.bSaveButtonActive==False):
+            QMessageBox().about(Dialog,"Error","Please Enter Required Fields")
+        else:
+            self.InsertValuesInCaptainDB()
+            reply= QMessageBox.information(Dialog, "Messege", "Saved Successfully", QMessageBox.Ok)
+        
+        
+
+   
         
     def setVisiblityOfButtons(self):
         self.ViewAgreementDocument_PushButton.hide()
@@ -186,14 +289,18 @@ class Ui_Captian(object):
         self.ViewIDDocument_PushButton.hide()
         self.ViewLisence_PushButton.hide()
         
-    def UploadAgreementType(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    def UploadAgreementType(self):  
+        self.AgreementTypeImagePath=self._RentalCarCommonUi.openFileNameDialog()
     def UploadCertification(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        fileNames=self._RentalCarCommonUi.openFileNameDialog()
+        self.CertificationImagePath.append(fileNames)
+        self.CertificationImagePath=self._RentalCarCommonUi.single_list(self.CertificationImagePath)
+        print(self.CertificationImagePath)
+        
     def UploadDocumentId(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.DocumentIdImagePath=self._RentalCarCommonUi.openFileNameDialog()
     def UploadLisence(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.LisenceImagePath=self._RentalCarCommonUi.openFileNameDialog()
 
         
     

@@ -7,16 +7,25 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from RentalCarCommen import RentalCarCommon
-from PyQt5.QtCore import QRegExp , Qt
+from RentalCarCommen import RentalCarCommonUi
+from RentalCarCommenDatabase import RentalCarCommonDatabase
+from PyQt5.QtCore import QRegExp , Qt 
 from PyQt5.QtWidgets import QMessageBox
-
+import base64
 
 from PyQt5.QtGui import QRegExpValidator
 class Ui_Vehicle(object):
     def __init__(self):
-     self._RentalCarCommon=RentalCarCommon()
-     self.bSaveButtonActive= True
+     self._RentalCarCommonUi=RentalCarCommonUi()
+     self._RentalCarCommonDatabase=RentalCarCommonDatabase()
+     self.CarPhotoImagePath=None
+     self.ContractTypeImagePath=None
+     self.InsuranceImagePath=None 
+     self.OwnerIDImagePath=None
+     self.CarPlateNumberImagePath=None
+
+     
+     
 #     self._sender = self.sender()
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -57,14 +66,14 @@ class Ui_Vehicle(object):
         self.ContractTypeLabel = QtWidgets.QLabel(Dialog)
         self.ContractTypeLabel.setGeometry(QtCore.QRect(20, 270, 81, 16))
         self.ContractTypeLabel.setObjectName("ContractTypeLabel")
-        self.ContractTypeCheckBox = QtWidgets.QComboBox(Dialog)
-        self.ContractTypeCheckBox.setGeometry(QtCore.QRect(100, 270, 69, 21))
-        self.ContractTypeCheckBox.setObjectName("ContractTypeCheckBox")
-        self.ContractTypeCheckBox.addItem("")
-        self.ContractTypeCheckBox.addItem("")
-        self.ContractTypeCheckBox.addItem("")
-        self.ContractTypeCheckBox.addItem("")
-        self.ContractTypeCheckBox.addItem("")
+        self.ContractTypeComboBox = QtWidgets.QComboBox(Dialog)
+        self.ContractTypeComboBox.setGeometry(QtCore.QRect(100, 270, 69, 21))
+        self.ContractTypeComboBox.setObjectName("ContractTypeComboBox")
+        self.ContractTypeComboBox.addItem("")
+        self.ContractTypeComboBox.addItem("")
+        self.ContractTypeComboBox.addItem("")
+        self.ContractTypeComboBox.addItem("")
+        self.ContractTypeComboBox.addItem("")
         self.ContractStartDateLabel = QtWidgets.QLabel(Dialog)
         self.ContractStartDateLabel.setGeometry(QtCore.QRect(20, 310, 101, 16))
         self.ContractStartDateLabel.setObjectName("ContractStartDateLabel")
@@ -82,8 +91,6 @@ class Ui_Vehicle(object):
         self.LastPeriodicalMaintainceatLabel.setObjectName("LastPeriodicalMaintainceatLabel")
         self.LastPeriodicMaintainceText = QtWidgets.QLineEdit(Dialog)
         self.LastPeriodicMaintainceText.setGeometry(QtCore.QRect(430, 110, 61, 20))
-        self.LastPeriodicMaintainceText.setInputMethodHints(QtCore.Qt.ImhDigitsOnly|QtCore.Qt.ImhPreferNumbers)
-        self.LastPeriodicMaintainceText.setText("")
         self.LastPeriodicMaintainceText.setObjectName("LastPeriodicMaintainceText")
         self.InsruancePolicyLabel = QtWidgets.QLabel(Dialog)
         self.InsruancePolicyLabel.setGeometry(QtCore.QRect(20, 400, 101, 16))
@@ -105,22 +112,22 @@ class Ui_Vehicle(object):
         self.Save_PushButton = QtWidgets.QPushButton(Dialog)
         self.Save_PushButton.setGeometry(QtCore.QRect(120, 460, 91, 23))
         self.Save_PushButton.setObjectName("Save_PushButton")
-        self.LicenseNumberExpiryDateLabel = QtWidgets.QLabel(Dialog)
-        self.LicenseNumberExpiryDateLabel.setGeometry(QtCore.QRect(210, 30, 61, 16))
-        self.LicenseNumberExpiryDateLabel.setObjectName("LicenseNumberExpiryDateLabel")
-        self.LicenseNumberTextBox = QtWidgets.QLineEdit(Dialog)
-        self.LicenseNumberTextBox.setGeometry(QtCore.QRect(100, 30, 101, 20))
-        self.LicenseNumberTextBox.setMaxLength(14)
-        self.LicenseNumberTextBox.setObjectName("LicenseNumberTextBox")
-        self.LicenseNumberLabel = QtWidgets.QLabel(Dialog)
-        self.LicenseNumberLabel.setGeometry(QtCore.QRect(20, 30, 81, 16))
-        self.LicenseNumberLabel.setObjectName("LicenseNumberLabel")
+        self.CarPlateNumbeExpiryDateLabel = QtWidgets.QLabel(Dialog)
+        self.CarPlateNumbeExpiryDateLabel.setGeometry(QtCore.QRect(240, 30, 61, 16))
+        self.CarPlateNumbeExpiryDateLabel.setObjectName("CarPlateNumbeExpiryDateLabel")
+        self.CarPlateNumberTextBox = QtWidgets.QLineEdit(Dialog)
+        self.CarPlateNumberTextBox.setGeometry(QtCore.QRect(110, 30, 100, 20))
+        self.CarPlateNumberTextBox.setObjectName("CarPlateNumberTextBox")
+        self.CarPlateNumberTextBox.setMaxLength(9)
+        self.CarPlateNumbeLabel = QtWidgets.QLabel(Dialog)
+        self.CarPlateNumbeLabel.setGeometry(QtCore.QRect(20, 30, 100, 16))
+        self.CarPlateNumbeLabel.setObjectName("CarPlateNumbeLabel")
         self.UploadCarPhoto_PushButton = QtWidgets.QPushButton(Dialog)
         self.UploadCarPhoto_PushButton.setGeometry(QtCore.QRect(235, 70, 101, 23))
         self.UploadCarPhoto_PushButton.setObjectName("UploadCarPhoto_PushButton")
-        self.UploadLicensePhoto_PushButton = QtWidgets.QPushButton(Dialog)
-        self.UploadLicensePhoto_PushButton.setGeometry(QtCore.QRect(370, 30, 111, 23))
-        self.UploadLicensePhoto_PushButton.setObjectName("UploadLicensePhoto_PushButton")
+        self.CarPlateNumberImage_PushButton = QtWidgets.QPushButton(Dialog)
+        self.CarPlateNumberImage_PushButton.setGeometry(QtCore.QRect(370, 30, 111, 23))
+        self.CarPlateNumberImage_PushButton.setObjectName("CarPlateNumberImage_PushButton")
         self.UploadContractType_PushButton = QtWidgets.QPushButton(Dialog)
         self.UploadContractType_PushButton.setGeometry(QtCore.QRect(260, 270, 101, 23))
         self.UploadContractType_PushButton.setObjectName("UploadContractType_PushButton")
@@ -136,10 +143,10 @@ class Ui_Vehicle(object):
         self.OwnedByThirdPartyCheckBox = QtWidgets.QCheckBox(Dialog)
         self.OwnedByThirdPartyCheckBox.setGeometry(QtCore.QRect(30, 150, 120, 17))
         self.OwnedByThirdPartyCheckBox.setObjectName("OwnedByThirdPartyCheckBox")
-        self.ExpiryDateEdit = QtWidgets.QDateEdit(Dialog)
-        self.ExpiryDateEdit.setGeometry(QtCore.QRect(280, 30, 71, 22))
-        self.ExpiryDateEdit.setCalendarPopup(True)
-        self.ExpiryDateEdit.setObjectName("ExpiryDateEdit")
+        self.CarPlateExpiryDate = QtWidgets.QDateEdit(Dialog)
+        self.CarPlateExpiryDate.setGeometry(QtCore.QRect(295, 30, 71, 22))
+        self.CarPlateExpiryDate.setCalendarPopup(True)
+        self.CarPlateExpiryDate.setObjectName("CarPlateExpiryDate")
         self.ContractStartDateEdit = QtWidgets.QDateEdit(Dialog)
         self.ContractStartDateEdit.setGeometry(QtCore.QRect(130, 310, 81, 21))
         self.ContractStartDateEdit.setCalendarPopup(True)
@@ -165,7 +172,7 @@ class Ui_Vehicle(object):
         self.ViewLicensePhoto_PushButton.setObjectName("ViewLicensePhoto_PushButton")
         self.ViewCarPhoto_PushButton = QtWidgets.QPushButton(Dialog)
         self.ViewCarPhoto_PushButton.setEnabled(True)
-        self.ViewCarPhoto_PushButton.setGeometry(QtCore.QRect(190, 70, 101, 23))
+        self.ViewCarPhoto_PushButton.setGeometry(QtCore.QRect(235, 70, 101, 23))
         self.ViewCarPhoto_PushButton.setObjectName("ViewCarPhoto_PushButton")
         self.ViewOwnerID_Pusbutton = QtWidgets.QPushButton(Dialog)
         self.ViewOwnerID_Pusbutton.setEnabled(True)
@@ -219,11 +226,11 @@ class Ui_Vehicle(object):
         self.EmailAddressLabel.setText(_translate("Dialog", "Email"))
         self.PhoneNumberTextLabel.setText(_translate("Dialog", "Phone"))
         self.ContractTypeLabel.setText(_translate("Dialog", "Contract Type"))
-        self.ContractTypeCheckBox.setItemText(0, _translate("Dialog", "Daily"))
-        self.ContractTypeCheckBox.setItemText(1, _translate("Dialog", "Monthly"))
-        self.ContractTypeCheckBox.setItemText(2, _translate("Dialog", "Annual"))
-        self.ContractTypeCheckBox.setItemText(3, _translate("Dialog", "Per KM"))
-        self.ContractTypeCheckBox.setItemText(4, _translate("Dialog", "Other"))
+        self.ContractTypeComboBox.setItemText(0, _translate("Dialog", "Daily"))
+        self.ContractTypeComboBox.setItemText(1, _translate("Dialog", "Monthly"))
+        self.ContractTypeComboBox.setItemText(2, _translate("Dialog", "Annual"))
+        self.ContractTypeComboBox.setItemText(3, _translate("Dialog", "Per KM"))
+        self.ContractTypeComboBox.setItemText(4, _translate("Dialog", "Other"))
         self.ContractStartDateLabel.setText(_translate("Dialog", "Contract Start Date"))
         self.ContactExpiryDate.setText(_translate("Dialog", "Contract Expiry Date"))
         self.DateOfServiceStart.setText(_translate("Dialog", "Date of service start"))
@@ -236,11 +243,11 @@ class Ui_Vehicle(object):
         self.pushButton_2.setText(_translate("Dialog", "Edit Data"))
         self.pushButton_3.setText(_translate("Dialog", "Archive Data"))
         self.Save_PushButton.setText(_translate("Dialog", "Save"))
-        self.LicenseNumberExpiryDateLabel.setText(_translate("Dialog", "Expiry date"))
-        self.LicenseNumberTextBox.setPlaceholderText(_translate("Dialog", "012345678912345"))
-        self.LicenseNumberLabel.setText(_translate("Dialog", "License number"))
+        self.CarPlateNumbeExpiryDateLabel.setText(_translate("Dialog", "Expiry date"))
+        self.CarPlateNumberTextBox.setPlaceholderText(_translate("Dialog", "س ل ع 124"))
+        self.CarPlateNumbeLabel.setText(_translate("Dialog", "Car Plate Number"))
         self.UploadCarPhoto_PushButton.setText(_translate("Dialog", "Upload Car Photo"))
-        self.UploadLicensePhoto_PushButton.setText(_translate("Dialog", "Upload Document"))
+        self.CarPlateNumberImage_PushButton.setText(_translate("Dialog", "Upload Document"))
         self.UploadContractType_PushButton.setText(_translate("Dialog", "Upload Document"))
         self.UploadOwnerID_PushButton.setText(_translate("Dialog", "Upload Owner ID"))
         self.PeriodicalMaintainceComboBox.setItemText(0, _translate("Dialog", "5000"))
@@ -261,172 +268,193 @@ class Ui_Vehicle(object):
         self.label_8.setText(_translate("Dialog", "Month"))
         self.KMatServiceStartText.setPlaceholderText(_translate("Dialog","5000 KM"))
         self.setButtonVisiblityDefautlSettings()
-        self.UploadLicensePhoto_PushButton.clicked.connect(self.UploadLicensePhoto)
+        self.CarPlateNumberImage_PushButton.clicked.connect(self.UploadCarPlateNumber)
         self.UploadContractType_PushButton.clicked.connect(self.UploadContractType)
         self.UploadOwnerID_PushButton.clicked.connect(self.UploadOwnerID)
         self.UploadInsurancePolicy_PushButton.clicked.connect(self.UploadInsurancePolicy)
         self.UploadCarPhoto_PushButton.clicked.connect(self.UploadCarPhoto)
         self.OwnedByThirdPartyCheckBox.clicked.connect(self.EnableOwnedByThirdPartyFields)
-        self.IntialValueText.textChanged[str].connect(self.IntialValueTextStatus)
+        
+            
+        
+        self.IntialValueText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.IntialValueText))
         self.IntialValueText.setValidator(QtGui.QIntValidator())
-        self.DepreciationPeriodText.textChanged[str].connect(self.DepreciationPeriodTextStatus)
+        self.DepreciationPeriodText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.DepreciationPeriodText))
         self.DepreciationPeriodText.setValidator(QtGui.QIntValidator())
-        self.FinalValueText.textChanged[str].connect(self.FinalValueTextStatus)
+        self.FinalValueText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.FinalValueText))
         self.FinalValueText.setValidator(QtGui.QIntValidator())
-        self.EmailAddressText.textChanged[str].connect(self.EmailAddressTextStatus)
-        self.EmailAddressText.setValidator(self._RentalCarCommon.EmailRegexValidator)
-        self.PhoneNumberText.textChanged[str].connect(self.PhoneNumberTextStatus)
-        self.PhoneNumberText.setValidator(self._RentalCarCommon.IntegerRegexValidator)
-        self.OwnerNameText.setValidator(self._RentalCarCommon.StringRegexValidator)
-        self.OwnerNameText.textChanged[str].connect(self.OwnerNameTextStatus)
-        self.KMatServiceStartText.textChanged[str].connect(self.KMAtServiceStartTextStatus)
-        self.KMatServiceStartText.setValidator(self._RentalCarCommon.IntegerRegexValidator)
-        self.VehicleTypeText.textChanged[str].connect(self.VehicleTypeTextStatus)
-        self.VehicleTypeText.setValidator(self._RentalCarCommon.VehicleTypeRegexValidator)
-        self.Save_PushButton.clicked.connect(lambda: self.InsertInDatabase(Dialog))
-        self.LicenseNumberTextBox.textChanged[str].connect(self.LicenseNumberTextBoxCheckStatus)
+        self.EmailAddressText.textChanged[str].connect(lambda:self._RentalCarCommonUi.EmailAddressTextStatus(self.EmailAddressText))
+        self.EmailAddressText.setValidator(self._RentalCarCommonUi.EmailRegexValidator)
+        self.PhoneNumberText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsLengthofStringVaild(self.PhoneNumberText,self._RentalCarCommonUi.MaxLengthofPhoneNumber))
+        self.PhoneNumberText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.OwnerNameText.setValidator(self._RentalCarCommonUi.StringRegexValidator)
+        self.OwnerNameText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.OwnerNameText))
+        self.KMatServiceStartText.textChanged[str].connect(lambda:self._RentalCarCommonUi.IsEmptyTextbox(self.KMatServiceStartText))
+        self.KMatServiceStartText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.VehicleTypeText.textChanged[str].connect(lambda:self._RentalCarCommonUi.VehicleTypeTextStatus(self.VehicleTypeText))
+        self.VehicleTypeText.setValidator(self._RentalCarCommonUi.VehicleTypeRegexValidator)
+        self.Save_PushButton.clicked.connect(lambda: self.OnClickSaveButton(Dialog))
         
-
-
+        self.CarPlateNumberTextBox.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsLengthofStringVaild(self.CarPlateNumberTextBox,self._RentalCarCommonUi.MaxLenghtOfCarPlateNumber))
+        self.CarPlateNumberTextBox.setValidator(self._RentalCarCommonUi.CarPlateNumberValidtor)
+        self.CarPlateNumberTextBox.returnPressed.connect(lambda: self.IsRecoredExist(self.CarPlateNumberTextBox.text()))
+        self.LastPeriodicMaintainceText.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.LastPeriodicMaintainceText))
+        self.LastPeriodicMaintainceText.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.ViewCarPhoto_PushButton.clicked.connect(self.ViewCarPhotoWindow)
         
-    def LicenseNumberTextBoxCheckStatus(self):
-        if(len(self.LicenseNumberTextBox.text())<14):
-            self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
+        
+        
+        
+    def InsertValuesInVehicleDB(self):
+# =============================================================================
+#        Fields Order in SQL
+#   ['CarPlateNumber', 'CarPlateNumberExpiryDate', 'VehilceType', 'PerodicalMaintaince', 'OwnerName', 'LicenseNumberImage', 'CarImage', 'OwnerIDImage',
+#    'InitialValue', 'DepreciationPeriod', 'FinalValue', 'Phone', 'Email', 'ContractType', 'ContractImage', 'ContractStartDate', 'ContractExpiryDate', 
+#   'DateOfStartService', 'KMAtServiceStart', 'InsurancePolicyImage', 'InsuranceExpiryDate', 'ArchiveData']       
+# =============================================================================
+       CarPlateNumber=self.CarPlateNumberTextBox.text()
+       CarPlateNumberExpiryDate=self.CarPlateExpiryDate.date().toString("yyyy-MM-dd")
+       VehilceType=self.VehicleTypeText.text()
+       PerodicalMaintaince=self.PeriodicalMaintainceComboBox.currentText()
+       OwnerName=self.OwnerNameText.text()
+       LicenseNumberImage=self.CarPlateNumberImagePath
+       CarImage=self.CarPhotoImagePath
+       OwnerIDImage=self.OwnerIDImagePath
+       InitialValue=self.IntialValueText.text()
+       DepreciationPeriod=self.DepreciationPeriodText.text()
+       FinalValue=self.FinalValueText.text()
+       Phone=self.PhoneNumberText.text()
+       Email=self.EmailAddressText.text()
+       ContractType=self.ContractTypeComboBox.currentText()
+       ContractImage=self.ContractTypeImagePath
+       ContractStartDate=self.ContractStartDateEdit.date().toString("yyyy-MM-dd")
+       ContractExpiryDate=self.ContractExpiryDateEdit.date().toString("yyyy-MM-dd")
+       DateOfStartService=self.DateOfServiceStartDateEdit.date().toString("yyyy-MM-dd")
+       KMAtServiceStart=self.KMatServiceStartText.text()
+       InsurancePolicyImage=self.InsuranceImagePath
+       InsuranceExpiryDate=self.InsuranceExpiryDate.date().toString("yyyy-MM-dd")
+       
+       values= [CarPlateNumber, CarPlateNumberExpiryDate, VehilceType, PerodicalMaintaince, OwnerName, LicenseNumberImage, CarImage, OwnerIDImage,
+                InitialValue, DepreciationPeriod,FinalValue, Phone, Email, ContractType, ContractImage, ContractStartDate, ContractExpiryDate, 
+                DateOfStartService, KMAtServiceStart, InsurancePolicyImage, InsuranceExpiryDate]
+       valueswithNoNone=self._RentalCarCommonDatabase.convertNoneToEmptyString(values)
+       self._RentalCarCommonDatabase.insertDataIntoVehicleTable(valueswithNoNone)
+      
+#       for value in values:
+#           print(value)
+       
+
+    def IsRecoredExist(self,Text):
+        exist,fields=self._RentalCarCommonDatabase.IsRecoredExistVehicle(Text)
+        if(exist==True):
+            RepersentiviefieldsName=[self.CarPlateNumberTextBox,self.VehicleTypeText,self.KMatServiceStartText,self.PhoneNumberText,self.EmailAddressText,
+                                     self.LastPeriodicMaintainceText,self.IntialValueText,self.FinalValueText,self.DepreciationPeriodText,self.OwnerNameText,self.PeriodicalMaintainceComboBox,self.ContractTypeComboBox,self.DateOfServiceStartDateEdit,
+                                            self.CarPlateExpiryDate,self.ContactExpiryDate,self.ContractStartDateEdit]
             
-    def IntialValueTextStatus(self):
-        if(self.IntialValueText.text()==""):
-            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
+            self.ReteriveAndRepresentValues(fields)
+            self._RentalCarCommonUi.DisableFields(RepersentiviefieldsName)
+            self.ShowViewButtons()
+            
+                        
+            
+            
+    def ViewCarPhotoWindow(self):
+#        if(self.CarPhotoImagePath!='' and self.CarPhotoImagePath!= None):
+            self._RentalCarCommonUi.write_image_in_file(self.CarPhotoImagePath)
+      
+      
+    def ReteriveAndRepresentValues(self,fields):
+        
+       self.CarPlateNumberTextBox.setText=fields[1]
+       self.CarPlateExpiryDate.setDate(self._RentalCarCommonUi.StringToDate(fields[2]))
+       self.VehicleTypeText.setText(fields[3])
+       self.PeriodicalMaintainceComboBox.setCurrentText(fields[4])
+       self.OwnerNameText.setText(fields[5])
+       self.CarPlateNumberImagePath=fields[6]
+       self.CarPhotoImagePath=fields[7]
+#       print(fields[7])
+#       self._RentalCarCommonUi.LoadImageFromDB(fields[7])
+       self.OwnerIDImagePath=fields[8]
+       self.IntialValueText.setText(fields[9])
+       self.DepreciationPeriodText.setText(fields[10])
+       self.FinalValueText.setText(fields[11])
+       self.PhoneNumberText.setText(fields[12])
+       self.EmailAddressText.setText(fields[13])
+       self.ContractTypeComboBox.setCurrentText(fields[14])
+       self.ContractTypeImagePath=fields[15]
+       self.ContractStartDateEdit.setDate(self._RentalCarCommonUi.StringToDate(fields[16]))
+       self.ContractExpiryDateEdit.setDate(self._RentalCarCommonUi.StringToDate(fields[17]))
+       self.DateOfServiceStartDateEdit.setDate(self._RentalCarCommonUi.StringToDate(fields[18]))
+       self.KMatServiceStartText.setText(fields[19])
+       self.InsuranceImagePath=fields[20]
+       self.InsuranceExpiryDate.setDate(self._RentalCarCommonUi.StringToDate(fields[21]))
+       
     
-    def DepreciationPeriodTextStatus(self):
-        if(self.DepreciationPeriodText.text()==""):
-            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-
-    def FinalValueTextStatus(self):
-        if(self.FinalValueText.text()==""):
-            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-            
-
-    def EmailAddressTextStatus(self):
-        if('@' and '.com' not in self.EmailAddressText.text()):
-            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False   
-        else:
-            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-            
-    
-    def PhoneNumberTextStatus(self):
-        if(len(self.PhoneNumberText.text())<11):
-            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-            
-    def KMAtServiceStartTextStatus(self):
-        if(self.KMatServiceStartText.text()==""):
-            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-            
-            
-    def VehicleTypeTextStatus(self):
-        if((self.VehicleTypeText.text()).count("/")!=2):
-            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-    
-    def OwnerNameTextStatus(self):
-        if(self.OwnerNameText.text()==""):
-            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        else:
-            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 1px;border-color: black;}")
-            self.bSaveButtonActive=True
-
-    def ValidateNoEmptyFields(self):
-        if (self.LicenseNumberTextBox.text()==''):
-             self.LicenseNumberTextBox.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-             self.bSaveButtonActive=False
-        if (self.VehicleTypeText.text()==''):
-            self.VehicleTypeText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.KMatServiceStartText.text()==''):
-            self.KMatServiceStartText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.PhoneNumberText.text()==''):
-            self.PhoneNumberText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.EmailAddressText.text()==''):
-            self.EmailAddressText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.FinalValueText.text()==''):
-            self.FinalValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.OwnedByThirdPartyCheckBox.isChecked()== False and self.DepreciationPeriodText.text()==''):
-            self.DepreciationPeriodText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if (self.OwnedByThirdPartyCheckBox.isChecked()== False and self.IntialValueText.text()==''):
-            self.IntialValueText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
-        if(self.OwnedByThirdPartyCheckBox.isChecked()== True and self.OwnerNameText.text()==""):
-            self.OwnerNameText.setStyleSheet("QLineEdit { border-style: outset;border-width: 2px;border-color: red;}")
-            self.bSaveButtonActive=False
+           
+       
+    def OnClickSaveButton(self,Dialog):
         
-        
+        textBoxeswithCheckboxNames =[self.CarPlateNumberTextBox,self.VehicleTypeText,self.KMatServiceStartText,self.PhoneNumberText,self.EmailAddressText,
+                                     self.LastPeriodicMaintainceText,self.IntialValueText,self.FinalValueText,self.DepreciationPeriodText,self.OwnerNameText]
+        pushButtons=[self.UploadCarPhoto_PushButton,self.UploadContractType_PushButton,self.UploadInsurancePolicy_PushButton,self.UploadOwnerID_PushButton,
+                     self.CarPlateNumberImage_PushButton]
+        ImagePaths=[self.CarPhotoImagePath,self.ContractTypeImagePath,self.InsuranceImagePath,self.OwnerIDImagePath,self.CarPlateNumberImagePath]
+       
+        self._RentalCarCommonUi.OnClickSaveButton(textBoxeswithCheckboxNames)
+        self._RentalCarCommonUi.isEmptyOrNoneImagePath(ImagePaths,pushButtons)
             
-            
-    def InsertInDatabase(self,Dialog):
-        self.ValidateNoEmptyFields()
-        if (self.bSaveButtonActive==False):
-#            QtWidgets.QMessageBox.question(self, 'PyQt5 message', "Do you want to save?", QtWidgets.QMessageBox.Yes)
+        if (self._RentalCarCommonUi.bSaveButtonActive==False):
              QMessageBox().about(Dialog,"Error","Please Enter Required Fields")
+        if (self._RentalCarCommonUi.bSaveButtonActive==True):
+             self.InsertValuesInVehicleDB()
+             reply= QMessageBox.information(Dialog, "Messege", "Saved Successfully", QMessageBox.Ok)
+
+
         
+        
+            
+            
+
         
         
         
     
-    def UploadLicensePhoto(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+    def UploadCarPlateNumber(self):
+        self.CarPlateNumberImagePath=self._RentalCarCommonUi.openFileNameDialog()
+#        self._RentalCarCommonUi.bSaveButtonActive=True
         
     def UploadContractType(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.ContractTypeImagePath=self._RentalCarCommonUi.openFileNameDialog()
+#        self._RentalCarCommonUi.bSaveButtonActive=True
         
     def UploadOwnerID(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.OwnerIDImagePath=self._RentalCarCommonUi.openFileNameDialog()
+#        self._RentalCarCommonUi.bSaveButtonActive=True
         
+    
     def UploadInsurancePolicy(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.InsuranceImagePath=self._RentalCarCommonUi.openFileNameDialog()
+#        self._RentalCarCommonUi.bSaveButtonActive=True
+        
      
     def UploadCarPhoto(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
+        self.CarPhotoImagePath=self._RentalCarCommonUi.openFileNameDialog()
+#        self._RentalCarCommonUi.bSaveButtonActive=True
+        
         
     def setButtonVisiblityDefautlSettings(self):
+    
         self.ViewCarPhoto_PushButton.hide()
         self.ViewContractType_PushButton.hide()
         self.ViewInsurancePolicy_PushButton.hide()
         self.ViewLicensePhoto_PushButton.hide()
         self.ViewOwnerID_Pusbutton.hide()
+        
+    def ShowViewButtons(self):
+        ViewButtonNames=[self.ViewCarPhoto_PushButton,self.ViewContractType_PushButton,self.ViewInsurancePolicy_PushButton,
+                         self.ViewLicensePhoto_PushButton,self.ViewOwnerID_Pusbutton]
+        self._RentalCarCommonUi.ShowFields(ViewButtonNames)
+        
         
     def EnableOwnedByThirdPartyFields(self):
         if(self.OwnedByThirdPartyCheckBox.isChecked()==True):

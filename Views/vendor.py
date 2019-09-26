@@ -84,7 +84,6 @@ class Ui_Vendor(object):
         self.Save_button.setText(_translate("Dialog", "Save"))
 
 
-
 if __name__ == "__main__":
     import sys
     def run():

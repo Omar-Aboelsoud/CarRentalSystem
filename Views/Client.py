@@ -7,10 +7,16 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from RentalCarCommen import RentalCarCommon
+from RentalCarCommen import RentalCarCommonUi
+from PyQt5.QtWidgets import QMessageBox
+from RentalCarClientDatabase import RentalCarClientdb
 class Ui_Client(object):
     def __init__(self):
-        self._RentalCarCommon=RentalCarCommon()
+        self._RentalCarCommonUi=RentalCarCommonUi()
+        self._RentalCarClientDatabase=RentalCarClientdb()
+        self.ContractImagePath=None
+        self.VehiclesApproved=[]
+        self.CaptainsApproved=[]
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(545, 400)
@@ -63,6 +69,7 @@ class Ui_Client(object):
         self.Phone_text = QtWidgets.QLineEdit(Dialog)
         self.Phone_text.setGeometry(QtCore.QRect(250, 70, 91, 20))
         self.Phone_text.setObjectName("Phone_text")
+        self.Phone_text.setMaxLength(11)
         self.EmailText = QtWidgets.QLineEdit(Dialog)
         self.EmailText.setGeometry(QtCore.QRect(390, 70, 141, 20))
         self.EmailText.setObjectName("EmailText")
@@ -87,7 +94,7 @@ class Ui_Client(object):
         self.ContactName_text.setGeometry(QtCore.QRect(90, 70, 111, 20))
         self.ContactName_text.setObjectName("ContactName_text")
         self.VehiclesAssignedComboBox = QtWidgets.QComboBox(Dialog)
-        self.VehiclesAssignedComboBox.setGeometry(QtCore.QRect(130, 230, 91, 22))
+        self.VehiclesAssignedComboBox.setGeometry(QtCore.QRect(130, 230, 110, 22))
         self.VehiclesAssignedComboBox.setEditable(True)
         self.VehiclesAssignedComboBox.setObjectName("VehiclesAssignedComboBox")
         self.StartContractDate_DateEdit = QtWidgets.QDateEdit(Dialog)
@@ -96,11 +103,11 @@ class Ui_Client(object):
         self.StartContractDate_DateEdit.setCalendarPopup(True)
         self.StartContractDate_DateEdit.setObjectName("StartContractDate_DateEdit")
         self.CaptainsApprovedComboBox = QtWidgets.QComboBox(Dialog)
-        self.CaptainsApprovedComboBox.setGeometry(QtCore.QRect(130, 270, 91, 22))
+        self.CaptainsApprovedComboBox.setGeometry(QtCore.QRect(130, 270, 110, 22))
         self.CaptainsApprovedComboBox.setEditable(True)
         self.CaptainsApprovedComboBox.setObjectName("CaptainsApprovedComboBox")
         self.VehiclesAssigned_AddButton = QtWidgets.QPushButton(Dialog)
-        self.VehiclesAssigned_AddButton.setGeometry(QtCore.QRect(240, 230, 75, 23))
+        self.VehiclesAssigned_AddButton.setGeometry(QtCore.QRect(260, 230, 75, 23))
         self.VehiclesAssigned_AddButton.setObjectName("VehiclesAssigned_AddButton")
         self.ContractExpiryDate_DateEdit = QtWidgets.QDateEdit(Dialog)
         self.ContractExpiryDate_DateEdit.setGeometry(QtCore.QRect(350, 160, 110, 22))
@@ -108,19 +115,20 @@ class Ui_Client(object):
         self.ContractExpiryDate_DateEdit.setCalendarPopup(True)
         self.ContractExpiryDate_DateEdit.setObjectName("ContractExpiryDate_DateEdit")
         self.CaptainAssign_AddButton = QtWidgets.QPushButton(Dialog)
-        self.CaptainAssign_AddButton.setGeometry(QtCore.QRect(240, 270, 75, 23))
+        self.CaptainAssign_AddButton.setGeometry(QtCore.QRect(260, 270, 75, 23))
         self.CaptainAssign_AddButton.setObjectName("CaptainAssign_AddButton")
         self.VehiclesAssigned_RemoveButton = QtWidgets.QPushButton(Dialog)
         self.VehiclesAssigned_RemoveButton.setEnabled(False)
-        self.VehiclesAssigned_RemoveButton.setGeometry(QtCore.QRect(340, 230, 75, 23))
+        self.VehiclesAssigned_RemoveButton.setGeometry(QtCore.QRect(360, 230, 75, 23))
         self.VehiclesAssigned_RemoveButton.setObjectName("VehiclesAssigned_RemoveButton")
         self.CaptainsAssigned_RemoveButton = QtWidgets.QPushButton(Dialog)
         self.CaptainsAssigned_RemoveButton.setEnabled(False)
-        self.CaptainsAssigned_RemoveButton.setGeometry(QtCore.QRect(340, 270, 75, 23))
+        self.CaptainsAssigned_RemoveButton.setGeometry(QtCore.QRect(360, 270, 75, 23))
         self.CaptainsAssigned_RemoveButton.setObjectName("CaptainsAssigned_RemoveButton")
         self.GenerateReport_PushButton = QtWidgets.QPushButton(Dialog)
         self.GenerateReport_PushButton.setGeometry(QtCore.QRect(290, 330, 91, 23))
         self.GenerateReport_PushButton.setObjectName("GenerateReport_PushButton")
+        
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -165,14 +173,89 @@ class Ui_Client(object):
         
         
         self.UploadDocumentButton.clicked.connect(self.UploadDocument)
+        self.SaveButton.clicked.connect(lambda: self.onSaveClick(Dialog))
         self.setButtonVisabilty()
         
+        self.ContactName_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.ContactName_text))
+        self.ContactName_text.setValidator(self._RentalCarCommonUi.StringRegexValidator)
+        
+        self.ClientName_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.ClientName_text))
+        self.ClientName_text.setValidator(self._RentalCarCommonUi.StringRegexValidator)
+        
+        self.Phone_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsLengthofStringVaild(self.Phone_text,self._RentalCarCommonUi.MaxLengthofPhoneNumber))
+        self.Phone_text.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.EmailText.textChanged[str].connect(lambda: self._RentalCarCommonUi.EmailAddressTextStatus(self.EmailText))
+        self.EmailText.setValidator(self._RentalCarCommonUi.EmailRegexValidator)
+        self.Fees_text.textChanged[str].connect(lambda: self._RentalCarCommonUi.IsEmptyTextbox(self.Fees_text))
+        self.Fees_text.setValidator(self._RentalCarCommonUi.IntegerRegexValidator)
+        self.VehiclesAssigned_AddButton.clicked.connect(lambda: self.AddVehilcesApproved(self.VehiclesAssignedComboBox.currentText()))
+        self.CaptainAssign_AddButton.clicked.connect(lambda: self.AddCaptainsApproved(self.CaptainsApprovedComboBox.currentText()))
+        
+        self.loadCaptainNames()
+        self.loadVehicleNames()
+        
+        
+    def AddVehilcesApproved(self,VehicleName):
+        self.VehiclesApproved.append(VehicleName)
+        self._RentalCarCommonUi.removeitemfromComboBox(self.VehiclesAssignedComboBox,VehicleName)
+      
+    def AddCaptainsApproved(self,CaptainName):
+        self.CaptainsApproved.append(CaptainName)
+        self._RentalCarCommonUi.removeitemfromComboBox(self.CaptainsApprovedComboBox,CaptainName)
+        
+    def InsertValuesInVehicleDB(self):
+            clientName=self.ClientName_text.text()
+            ContantName=self.ContactName_text.text()
+            phone=self.Phone_text.text()
+            email=self.EmailText.text()
+            contractType=self.ContractType_combobox.currentText()
+            ContractImage=self.ContractImagePath
+            contractStartDate=self.StartContractDate_DateEdit.date().toString("yyyy-MM-dd")
+            contractExpiryDate=self.ContractExpiryDate_DateEdit.date().toString("yyyy-MM-dd")
+            fees=self.Fees_text.text()
+            vehiclesApproved=self.VehiclesApproved
+            captainApproved=self.CaptainsApproved
+            
+            values=[clientName,ContantName,phone,email,contractType,ContractImage,contractStartDate,
+                    contractExpiryDate,fees,vehiclesApproved,captainApproved]
+            valueswithNoNone=self._RentalCarClientDatabase.convertNoneToEmptyString(values)
+            self._RentalCarClientDatabase.insertIntoClientTable(valueswithNoNone)
+        
+        
+    def onSaveClick(self,Dialog):
+        textBoxeswithCheckboxNames =[self.ContactName_text,self.ClientName_text,self.Phone_text,self.EmailText,self.Fees_text]
+        pushButtons=[self.UploadDocumentButton]
+        ImagePaths=[self.ContractImagePath]
+        ComboBoxes=[self.CaptainsApprovedComboBox,self.VehiclesAssignedComboBox]
+        FieldsAssigned=[self.VehiclesApproved,self.CaptainsApproved]
+        self._RentalCarCommonUi.OnClickSaveButton(textBoxeswithCheckboxNames)
+        self._RentalCarCommonUi.isEmptyOrNoneImagePath(ImagePaths,pushButtons)
+        self._RentalCarCommonUi.IsFeildisNotAssigned(FieldsAssigned,ComboBoxes)
+            
+        if (self._RentalCarCommonUi.bSaveButtonActive==False):
+             QMessageBox().about(Dialog,"Error","Please Enter Required Fields")
+        if (self._RentalCarCommonUi.bSaveButtonActive==True):
+             self.InsertValuesInVehicleDB()
+             reply= QMessageBox.information(Dialog, "Messege", "Saved Successfully", QMessageBox.Ok)
+            
+    def loadCaptainNames(self):
+        captainNames=self._RentalCarClientDatabase.loadCaptainNames()
+
+        self.CaptainsApprovedComboBox.addItems(captainNames)
+    
+    def loadVehicleNames(self):
+       vehicleNames=self._RentalCarClientDatabase.loadVehiclesNames()
+      
+       self.VehiclesAssignedComboBox.addItems(vehicleNames)
+    
     def UploadDocument(self):
-        ImagePath=self._RentalCarCommon.openFileNameDialog()
-        return ImagePath
+        self.ContractImagePath=self._RentalCarCommonUi.openFileNameDialog()
+     
         
     def setButtonVisabilty(self):
         self.ViewDocumentButton.hide()
+        
+
 
 if __name__ == "__main__":
     import sys
